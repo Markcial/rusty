@@ -1,0 +1,15 @@
+[package]
+name = "rusty"
+version = "0.1.0"
+authors = ["Marc Garcia Sastre <markcial@gmail.com>"]
+edition = "2018"
+
+[[bin]]
+name = "rusty"
+
+[dependencies]
+wry = "0.5.0"
+rouille = "3.0.0"
+
+[workspace]
+members = ["wasm"]
