@@ -2,14 +2,16 @@
 name = "rusty"
 version = "0.1.0"
 authors = ["Marc Garcia Sastre <markcial@gmail.com>"]
-edition = "2018"
+edition = "2021"
+rust-version = "1.85"
 
 [[bin]]
 name = "rusty"
 
 [dependencies]
-wry = "0.5.0"
-rouille = "3.0.0"
+tao = "0.37"
+wry = "0.57"
 
 [workspace]
 members = ["wasm"]
+default-members = ["."]

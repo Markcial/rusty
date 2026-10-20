@@ -3,4 +3,9 @@ CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = "true"
 
 [tasks.default]
 clear = true
-dependencies = ["build"]
+dependencies = ["build-wasm", "build"]
+
+[tasks.build-wasm]
+cwd = "wasm"
+command = "wasm-pack"
+args = ["build", "--target", "web", "--out-name", "package", "--dev"]

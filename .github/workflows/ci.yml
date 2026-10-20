@@ -1,6 +1,4 @@
-# The desktop binary links wry 0.5 against WebKitGTK 4.0, which current
-# GitHub-hosted Ubuntu images do not ship. This workflow builds only the
-# wasm crate. Rust 1.86+ rejects wasm-bindgen 0.2.71, so the toolchain is pinned.
+# Wasm package only. The native WebKitGTK 4.1 binary is built by native.yml.
 name: CI
 
 on:
@@ -15,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: dtolnay/rust-toolchain@1.83.0
+      - uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
 
