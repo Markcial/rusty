@@ -1,0 +1,36 @@
+# The desktop binary links wry 0.5 against WebKitGTK 4.0, which current
+# GitHub-hosted Ubuntu images do not ship. This workflow builds only the
+# wasm crate. Rust 1.86+ rejects wasm-bindgen 0.2.71, so the toolchain is pinned.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  wasm:
+    name: wasm32
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@1.83.0
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Build wasm crate
+        run: cargo build -p wasm --target wasm32-unknown-unknown --locked
+
+      - name: Install wasm-pack 0.13.1
+        run: |
+          curl -sSfL https://github.com/rustwasm/wasm-pack/releases/download/v0.13.1/wasm-pack-v0.13.1-x86_64-unknown-linux-musl.tar.gz -o /tmp/wasm-pack.tar.gz
+          tar -xzf /tmp/wasm-pack.tar.gz -C /tmp
+          mkdir -p "$HOME/.local/bin"
+          install -m 755 /tmp/wasm-pack-v0.13.1-x86_64-unknown-linux-musl/wasm-pack "$HOME/.local/bin/wasm-pack"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          "$HOME/.local/bin/wasm-pack" --version
+
+      - name: wasm-pack build
+        working-directory: wasm
+        run: wasm-pack build --target web --out-name package --dev --locked
